@@ -1,0 +1,97 @@
+README Indy
+
+* This project was made for my CS15 Final Project at Brown University, in the Fall of 2022. 
+* The program is best run through IntelliJ IDEA.
+* This README was written to follow the specifications outlined in earlier class projects. 
+
+——————————————————————————————————————————————————————————————————————————————————————————————
+
+Overview:
+
+     This project is a recreation of the popular Bloons Tower Defense game series, titled BloonsTD15 (gameplay
+     descriptions can be found in greater detail in the User Guide, but it more or less functions the same way
+     as the games on which it is based).
+
+     As far as the structure of the program, it follows closely with what we have done for most of the year,
+     just with more complexity. There is a PaneOrganizer class that deals with the visual layout of the start
+     screen and the game screen, and a BloonsGame class that deals with the overall logical functionality of
+     the game and the different game-states... The BloonsGame includes a MoneyTracker which keeps track of the
+     user's cash as it changes throughout the game. It also includes an instance of DartOrganizer, which deals
+     with modifying and moving the darts and checking collisions between darts and bloons; an instance of
+     BloonsOrganizer, which deals with tracking the levels and adding/moving/removing bloons throughout the
+     course of the game; and an instance of MonkeyOrganizer, which deals with buying, placing, and aiming the
+     monkeys during and between levels. Each of these classes include instances of their respective game
+     elements (i.e. DartOrganizer includes Darts), among other relevant classes. The MonkeyOrganizer, for
+     instance, also contains an instance of the UpgradePanel, which graphically and logically controls the
+     upgrade system for monkeys (the UpgradePanel replaces the monkey menu on the right of the screen)...
+
+     I'm not going to discuss the association in depth here given that it is so extensive, but it is more or
+     less accurately reflected in the containment & association diagrams provided :)
+
+Design Choices:
+
+     DOUBLY LINKED LIST:
+        One notable design choice that I made was to store the all of the Bloons in a LinkedList. I chose to
+     do this for three reasons. First, I would never have to search for a specific Bloon or index into the data
+     structure somehow, which meant that a potentially slow search time was not a concern for me. Second,
+     I hoped to order the Bloons in the list by their distance along the track, and a LinkedList would allow
+     me to always add the Bloons to one end of the list, and also re-order the list in real time as some Bloons
+     move faster and overtake other Bloons (each Bloons keeps track of its distance traveled). And thirdly, a
+     LinkedList would allow monkeys to either loop through the list from front to back, or back to front, (in
+     this case, the user could choose if the monkey targeted the first or the last Bloons in the track). This is
+     something I didn't have time to implement, but it was a consideration in my decision to use a LinkedList.
+     This is also why I chose to use a DoublyLinkedList rather than a SinglyLinkedList: I could loop in either
+     direction through the list seamlessly...
+
+     MONKEY/DART INHERITANCE:
+        Another significant design decision was the choice to implement inheritance in my Monkey classes. This was
+     for me a more straightforward decision, since the monkeys are all bought and placed in a similar manner,
+     and they only have minor functional differences (these differences were, however, enough to discourage me
+     from trying to implement factory patter, as I did with the Bloons). The major differences involve the visual
+     make-up of the Monkeys, the shooting process, and the upgrade paths. I also chose to implement the ArmShooter
+     subclass of the Monkey superclass because I realized about halfway through that the Dart Monkey and Ninja
+     Monkey shared a lot of functionality that they did not share with the Bomb Shooter, so that functionality
+     could be dealt with in the "ArmShooter" (I called it that since both the Dart and Ninja monkeys shoot with
+     an arm animation)...
+        Inheritance is also used in a less significant manner with the Dart and Cannonball, since their basic
+     functionality is the same and they differ in appearance and in how they 'die' (the Darts just disappear,
+     while the Cannonballs generate an explosion).
+
+     MONKEY VISUALS:
+        You may notice that I have dealt with setting up the monkey appearances in two very different ways in
+     this program. While programming, I began with only the Dart Monkey, and because I figured it would be easier
+     to manipulate the shapes if I created them individually in the program, I made the Dart Monkey into a
+     composite shape of about 15 different ellipses/rectangles/polygons. Then, when creating the Ninka Monkey,
+     I used a similar body structure and added only a couple extra features, and when creating the animation,
+     I simply added two more shapes (a hand and arm) that would move with the timeline.
+        When I created the Bomb Shooter, however, I had made the decision not to use an animation, and given the
+     complexity of the shape, I figured it would be difficult and unnecessary to recreate as a composite shape.
+     Instead, I created the visual in an outside application and imported it in two versions (the base image, and
+     the image for when it was selected by the user, in which some of the colors light up). This made the visual
+     set up much simpler than that of the Dart and Ninja Monkeys, given that it was only one ImageView representing
+     the entire monkey, rather than 15 or so Shapes.
+        While I considered doing the same for the Ninja and Dart monkeys, the decision to leave them as composite
+     shapes was mainly due to the fact that they were animated, and so it was useful to have the shapes move
+     independently of one another. It also saved me the time or re-doing those classes almost entirely...
+
+Extra Credit:
+
+    - Extra Bloon(s):
+        - There are red, blue, green, yellow, and pink normal bloons, as well as a black bloons, lead bloons,
+          camo bloons, and an A.N.D.Y. Bloon at the end of the game.
+    - Animations:
+        - The Dart Monkey and Ninja Monkey have shooting animations where their arms move in and out.
+        - The Bomb Shooter's cannonballs and the Bloons have explosion and pop animations, respectively.
+    - Different Levels:
+        - There are levels from 1 to 30, which are defined in the constants by a 3D array of integers.
+    - Start Screen:
+        - There is a start screen shown at the start of the game, and whenever the user restarts the game.
+    - Range Circle
+        - Each monkey has a range circle that indicates the monkey's range, and it changes color to be
+          a reddish-gray color if the user tries to place a monkey where it cannot be placed.
+
+Known Bugs: None.
+
+Debugging Collaborators: None.
+
+Hours Spent: 120+
